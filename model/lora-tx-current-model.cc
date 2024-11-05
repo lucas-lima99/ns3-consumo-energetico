@@ -188,7 +188,7 @@ ConstantLoraTxCurrentModel::CalcTxCurrent (double txPowerDbm) const
 NS_OBJECT_ENSURE_REGISTERED (SX1272LoRaWANCurrentModel);
 
 const double SX1272LoRaWANCurrentModel::m_txPowerUsePaBoost[] = {0.032018, 0.033157, 0.034224, 0.035168, 0.036302,
-0.037481, 0.038711, 0.040310, 0.042289, 0.044276, 0.046755, 0.050334, 0.054216, 0.061582, 0.068982, 0.077138, 0.0, 0.0, 0.105454}; // 2dBm to 17dBm, 1dB steps. Then high power mode of 20dBm.
+0.037481, 0.038711, 0.040310, 0.042289, 0.044276, 0.046755, 0.050334, 0.054216, 0.061582, 0.068982, 0.077138, 0.0, 0.0, 0.105454}; // 2dBm até 17dBm, 1dB steps. A maior potência é 20dBm, porém não encontrei valores de corrente pra 18 e 19 dBm.
 
 const double SX1272LoRaWANCurrentModel::m_txPowerUseRfo[] = {0.0};
 
@@ -358,7 +358,7 @@ SX1272LoRaWANCurrentModel::SetTxCurrent (double txPowerDbm)
     }
     else if(txPowerDbm == 18 || txPowerDbm == 19)
     {
-      NS_FATAL_ERROR ("SX1272LoRaWANCurrentModel:18dBm and 19dBm are not available on the SX1272.");
+      NS_FATAL_ERROR ("SX1272LoRaWANCurrentModel:18dBm and 19dBm are not measured on the paper.");
     }
     else if(txPowerDbm > 20)
     {
