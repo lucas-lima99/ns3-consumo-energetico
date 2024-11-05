@@ -297,7 +297,7 @@ int main (int argc, char *argv[])
   NS_LOG_INFO("valor gaussiano:  " << gaussianValue << " gaussiano");
 
 
-//  // Create the lora channel object // Caso copie esse código, use esse canal. O outro é aquele que leva em consideração o shadowing
+//  // Create the lora channel object // Caso copie esse código, use esse canal. O que não está comentado é aquele que leva em consideração o shadowing. Aí você pode desconsiderar as linhas 292 até 295 também
 //  Ptr<LogDistancePropagationLossModel> loss = CreateObject<LogDistancePropagationLossModel> ();
 //  loss->SetPathLossExponent (d);
 //  loss->SetReference (1, 7.7);
@@ -309,34 +309,6 @@ int main (int argc, char *argv[])
   loss->SetReference (1, distanceReference);
   loss->SetGaussianVariable(gaussianValue);
   NS_LOG_INFO("Gaussian na classe  " << loss->GetGaussianVariable() << " gaussiano");
-
-//  loss->SetReference (1, 8.1);
-//  // PROPAGAÇÃO LOS UFJF:
-//  Ptr<LogDistancePropagationLossModel> LOS = CreateObject<LogDistancePropagationLossModel> ();
-//  LOS->SetPathLossExponent (3.78);
-//  LOS->SetReference (1, 7.9);
-//
-//  // PROPAGAÇÃO NLOS UFJF:
-//  Ptr<LogDistancePropagationLossModel> NLOS = CreateObject<LogDistancePropagationLossModel> ();
-//  NLOS->SetPathLossExponent (3.88);
-//  NLOS->SetReference (1, 8.1);
-//
-//  // Sorteio de numero aleatorio, considerando NLOS entre 1 e 80 e LOS entre 81 e 100:
-//  Ptr<UniformRandomVariable> randomVar = CreateObject<UniformRandomVariable>();
-//  randomVar->SetAttribute("Min", DoubleValue(1.0));
-//  randomVar->SetAttribute("Max", DoubleValue(100.0));
-//  int probabilidade_LOS_NLOS = randomVar->GetInteger();
-//
-//  if (probabilidade_LOS_NLOS < 81){
-//	  NS_LOG_INFO("VERIFICANDO qual o número sorteado: " << probabilidade_LOS_NLOS);
-//	  loss = NLOS;
-//	  NS_LOG_INFO("Estado NLOS, com Path Loss de " << loss->GetPathLossExponent());
-//  }
-//  else {
-//	  loss = LOS;
-//	  NS_LOG_INFO("VERIFICANDO qual o número sorteado: " << probabilidade_LOS_NLOS);
-//	  NS_LOG_INFO("Estado LOS, com Path Loss de  " << loss->GetPathLossExponent());
-//  }
 
   if (realisticChannelModel)
   	{
@@ -405,38 +377,6 @@ int main (int argc, char *argv[])
 
   NetDeviceContainer endDevicesNetDevices = helper.Install (phyHelper, macHelper, endDevices);
 
-//  Ptr<LogicalLoraChannelHelper> channelHelper = CreateObject<LogicalLoraChannelHelper> ();
-//  std::vector<Ptr<LogicalLoraChannel> > channelList = channelHelper->GetChannelList();
-//  std::vector<Ptr<LogicalLoraChannel> > channelEnabledList = channelHelper->GetEnabledChannelList();
-////  NS_LOG_INFO ("EnabledChannelList:  " << channelEnabledList);
-//
-//  if (!channelEnabledList.empty())
-//  {
-//      NS_LOG_INFO("Lista de canais habilitados: ");
-//      for (size_t i = 0; i < channelEnabledList.size(); ++i)
-//      {
-//          Ptr<LogicalLoraChannel> channel = channelEnabledList[i];
-//          double frequency = channel->GetFrequency();
-//          NS_LOG_INFO ("Canal:  " << i << ": Frequência = "<< frequency);
-//
-//      }
-//  }
-//  else
-//  {
-//      NS_LOG_WARN("Nenhum canal habilitado foi encontrado.");
-//  }
-//
-//
-//  if (!channelList.empty())
-//  {
-//	  Ptr<LogicalLoraChannel> firstChannel = channelList[0];
-//  }
-//  else{
-//	  NS_LOG_ERROR("Nenhum canal foi encontrado na lista de canais. Channel empty é " << channelList.empty());
-//  }
-
-
-//  NS_LOG_INFO ("teste : " << channel->m_count());
   /*********************
    *  Create Gateways  *
    *********************/
@@ -511,15 +451,6 @@ int main (int argc, char *argv[])
 
   macHelper.SetSpreadingFactorsUp (endDevices, gateways, channel, algoritmo);
 
-//  Ptr<Node> firstEndDevice = endDevices.Get(0);
-//  Ptr<NetDevice> netDevice = firstEndDevice->GetDevice(0);
-//  Ptr<LoraNetDevice> loraNetDevice = DynamicCast<LoraNetDevice>(netDevice);
-//  Ptr<Node> firstEndDevice = endDevices.Get(0);
-//  Ptr<NetDevice> netDevice = firstEndDevice->GetDevice(0);
-//  Ptr<LoraNetDevice> loraNetDevice = DynamicCast<LoraNetDevice>(netDevice);
-//
-
- // TODO ACRESCENTAR POTENCIA END DEVICE
   for (uint32_t i = 0; i < endDevices.GetN(); ++i) {
       Ptr<Node> node = endDevices.Get(i);
       for (uint32_t j = 0; j < node->GetNDevices(); ++j) {
@@ -537,21 +468,6 @@ int main (int argc, char *argv[])
           }
       }
   }
-
-//
-//  Ptr<EndDeviceLoraMac> mac = loraNetDevice->GetMac()->GetObject<EndDeviceLoraMac>();
-//  mac->SetTransmissionPower(txPowerdBm);
-//  if (mac)
-//    {
-//	  uint8_t txPower = mac->GetTransmissionPower();
-//      double txPowerdBmv = static_cast<double>(txPower);
-//	  NS_LOG_INFO("Potência de transmissão depois da conversão: " << txPowerdBmv << "dBm");
-//    }
-//  else
-//  {
-//	  NS_LOG_INFO("Deu ruim");
-//
-//  }
 
 
   /*********************************************
@@ -595,61 +511,10 @@ int main (int argc, char *argv[])
 
   // install source on EDs' nodes
   EnergySourceContainer sources = basicSourceHelper.Install (endDevices);
-//  Names::Add ("/Names/EnergySource", sources.Get (0));
 
   // install device model
   DeviceEnergyModelContainer deviceModels = radioEnergyHelper.Install
       (endDevicesNetDevices, sources);
-
-//  for (uint32_t i = 0; i < endDevices.GetN(); ++i) {
-//      Ptr<Node> node = endDevices.Get(i);
-//      for (uint32_t j = 0; j < node->GetNDevices(); ++j) {
-//          Ptr<LoraNetDevice> loraNetDevice = DynamicCast<LoraNetDevice>(node->GetDevice(j));
-//
-//          if (loraNetDevice) {
-//              Ptr<EndDeviceLoraMac> mac = loraNetDevice->GetMac()->GetObject<EndDeviceLoraMac>();
-//              if (mac) {
-//                  mac->SetTransmissionPower(txPowerdBm);
-//                  std::cout << "Potencia de transmissao para o dispositivo" << i << ": " << txPowerdBm << " dBm\n";
-//
-//              } else {
-//            	  std::cerr << "Erro: MAC nao encontrado para o dispositivo " << i << "\n";
-//                  }
-//          }
-//      }
-//  }
-
-
-//  Ptr<LogicalLoraChannelHelper> logical;
-//  Ptr<LogicalLoraChannelHelper> logical = CreateObject<LogicalLoraChannelHelper>();
-//  Ptr<LogicalLoraChannel> logical;
-//  double maxTxPower = logical->GetTxPowerForChannel(logical);
-//  NS_LOG_UNCOND("Maximum Tx Power for this channel: " << maxTxPower << " dBm");
-
-//  Ptr<LogicalLoraChannelHelper> channelHelper = CreateObject<LogicalLoraChannelHelper> ();
-//      Ptr<LogicalLoraChannel> logicalChannel = CreateObject<LogicalLoraChannel> ();
-//      double maxTxPower = channelHelper->GetTxPowerForChannel(logicalChannel);
-////
-//  Ptr<LogicalLoraChannelHelper> txcanal = CreateObject
-//GetTxPowerForChannel()
-
-//  NS_LOG_INFO("Potência TX no canal: " << txcanal << "dBm");
-
-//  std::list< Ptr< SubBand > >::iterator it;
-//  Ptr<SubBand> subbandchannel;
-//  Ptr<SubBand> subbandchannel = CreateObject<SubBand> ();
-
-//    NS_LOG_INFO("Potência maxima canal: " << subbandchannel->GetMaxTxPowerDbm() );
-//  NS_LOG_INFO("Potência maxima canal: " << (*it)->GetMaxTxPowerDbm ());
-
-//    for (it = m_subBandList.begin (); it != m_subBandList.end (); it++)
-//      {
-//        // Check whether this channel is in this SubBand
-//        if ((*it)->BelongsToSubBand (logicalChannel->GetFrequency ()))
-//          {
-//            return (*it)->GetMaxTxPowerDbm ();
-//          }
-//      }
 
   /**************
    * Get output *
@@ -673,14 +538,6 @@ int main (int argc, char *argv[])
 
   Simulator::Run ();
 
-//  batteryEnergyFinal = sources.Get(0)->GetRemainingEnergy();
-//  NS_LOG_INFO("teste do dispositivo 3: " << sources.Get(3)->GetRemainingEnergy());
-//  NS_LOG_INFO("teste do dispositivo 2: " << sources.Get(2)->GetRemainingEnergy());
-//  NS_LOG_INFO("teste do dispositivo 1: " << sources.Get(1)->GetRemainingEnergy());
-//  NS_LOG_INFO("teste do dispositivo 0: " << sources.Get(0)->GetRemainingEnergy());
-//  NS_LOG_INFO("tnúmero de dispositivos: " << sources.GetN());
-
-
   double energy = 0;
   for(int i=0; i<nDevices; i++){
 	  energy += sources.Get(i)->GetRemainingEnergy();
@@ -692,8 +549,7 @@ int main (int argc, char *argv[])
   Simulator::Destroy ();
 
   NS_LOG_INFO ("Computing performance metrics...");
-//  helper.PrintPerformance (transientPeriods * appPeriod, appStopTime);
-  int transientPeriods = 0;
+ int transientPeriods = 0;
   Time appPeriod = Seconds(appPeriodsSeconds);
 
 //  helper.PrintPerformance (transientPeriods * appPeriod, Seconds(appPeriodsSeconds));
