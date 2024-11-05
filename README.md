@@ -12,6 +12,7 @@
 
 ## end-device-lora-mac.cc / end-device-lora-mac.h
  -> Criei um método para setar a potência de transmissão nos end devices. Acho que você já fez isso no seu projeto, mas decidi colocar aqui também, caso não tenha feito
+ 
     O método chama SetTransmissionPower, deixei um //TODO pra ficar mais fácil de localizar
 
 ## lora-radio-energy-model.cc / lora-radio-energy-model.h
